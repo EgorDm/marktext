@@ -97,6 +97,10 @@ div.ag-show-quick-insert-hint p.ag-paragraph.ag-active > span.ag-paragraph-conte
   word-break: break-word;
 }
 
+.ag-code-content > .token {
+    white-space: pre-wrap;
+}
+
 /* TODO: This disables wrapping long lines in code blocks, allowing
    scrolling instead.  Make this contingent on user preference. */
 .ag-code-content {
