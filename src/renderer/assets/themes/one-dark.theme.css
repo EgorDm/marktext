@@ -162,6 +162,16 @@
   box-shadow: none;
 }
 
+@media not print {
+  #ag-editor-id {
+    max-width: 1200px;
+  }
+}
+
+#ag-editor-id > p.ag-paragraph {
+  text-indent: 1.5em;
+}
+
 .editor-tabs {
   box-shadow: none !important;
 }
@@ -215,6 +225,12 @@ pre[class*="language-"],
 pre.ag-paragraph {
   background: var(--codeBlockBgColor) !important;
   border: none !important;
+}
+
+.source-code .CodeMirror {
+    max-width: 100%;
+    padding-left: 25px;
+    padding-right: 25px;
 }
 
 p:not(.ag-active)[data-role="hr"]::before {
