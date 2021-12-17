@@ -18,6 +18,8 @@ const { MenuItem } = remote
 export default (spellchecker, selectedWord, wordSuggestions, replaceCallback) => {
   if (spellchecker && spellchecker.isEnabled) {
     const spellingSubmenu = []
+    const suggestionsSubmenu = []
+    const actionsSubmenu = []
 
     // Change language menu entries
     const currentLanguage = spellchecker.lang
@@ -42,7 +44,7 @@ export default (spellchecker, selectedWord, wordSuggestions, replaceCallback) =>
 
     // Handle misspelled word if wordSuggestions is set, otherwise word is correct.
     if (selectedWord && wordSuggestions) {
-      spellingSubmenu.push({
+      const addToDictAction = {
         label: 'Add to Dictionary',
         click (menuItem, targetWindow) {
           // NOTE: Need to notify Chromium to invalidate the spelling underline.
@@ -53,7 +55,9 @@ export default (spellchecker, selectedWord, wordSuggestions, replaceCallback) =>
               log.error(error)
             })
         }
-      })
+      }
+      spellingSubmenu.push(addToDictAction)
+      actionsSubmenu.push(addToDictAction)
       // Ignore word for current runtime for all languages.
       spellingSubmenu.push({
         label: 'Ignore',
@@ -67,14 +71,16 @@ export default (spellchecker, selectedWord, wordSuggestions, replaceCallback) =>
       if (wordSuggestions.length > 0) {
         spellingSubmenu.push(SEPARATOR)
         for (const word of wordSuggestions) {
-          spellingSubmenu.push({
+          const item = {
             label: word,
             click () {
               // Notify Muya to replace the word. We cannot just use Chromium to
               // replace the word because the change is not forwarded to Muya.
               replaceCallback(word)
             }
-          })
+          }
+          spellingSubmenu.push(item)
+          suggestionsSubmenu.push(item)
         }
       }
     } else {
@@ -93,7 +99,7 @@ export default (spellchecker, selectedWord, wordSuggestions, replaceCallback) =>
         }
       })
     }
-    return spellingSubmenu
+    return [spellingSubmenu, suggestionsSubmenu, actionsSubmenu]
   }
   return null
 }

@@ -31,12 +31,17 @@ export const showContextMenu = (event, selection, spellchecker, selectedWord, wo
   const win = remote.getCurrentWindow()
   const disableCutAndCopy = start.key === end.key && start.offset === end.offset
 
-  const spellingSubmenu = spellcheckMenuBuilder(spellchecker, selectedWord, wordSuggestions, replaceCallback)
-  if (spellingSubmenu) {
-    menu.append(new MenuItem({
-      label: 'Spelling...',
-      submenu: spellingSubmenu
-    }))
+  const [spellingSubmenu, suggestionsSubmenu, actionsSubmenu] = spellcheckMenuBuilder(spellchecker, selectedWord, wordSuggestions, replaceCallback)
+  if (suggestionsSubmenu && suggestionsSubmenu.length) {
+    for (const item of suggestionsSubmenu) {
+      menu.append(new MenuItem(item))
+    }
+    menu.append(new MenuItem(SEPARATOR))
+  }
+  if (actionsSubmenu && actionsSubmenu.length) {
+    for (const item of actionsSubmenu) {
+      menu.append(new MenuItem(item))
+    }
     menu.append(new MenuItem(SEPARATOR))
   }
 
@@ -47,5 +52,12 @@ export const showContextMenu = (event, selection, spellchecker, selectedWord, wo
   CONTEXT_ITEMS.forEach(item => {
     menu.append(new MenuItem(item))
   })
+  if (spellingSubmenu) {
+    menu.append(new MenuItem(SEPARATOR))
+    menu.append(new MenuItem({
+      label: 'Spelling...',
+      submenu: spellingSubmenu
+    }))
+  }
   menu.popup([{ window: win, x: event.clientX, y: event.clientY }])
 }
