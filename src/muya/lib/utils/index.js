@@ -307,6 +307,25 @@ export const getImageInfo = (src, baseUrl = window.DIRNAME) => {
   }
 }
 
+export const BLOCKQUOTE_REG = /^ {0,3}([>%:])/
+
+export const BLOCKQUOTE_TYPES_REV = {
+  '>': 'quote',
+  '%': 'comment',
+  ':': 'theorem'
+}
+
+export const BLOCKQUOTE_TYPES = {
+  quote: '>',
+  comment: '%',
+  theorem: ':'
+}
+
+export const extractBlockquoteType = (line) => {
+  const match = line.match(BLOCKQUOTE_REG)
+  return match && BLOCKQUOTE_TYPES_REV[match[0]]
+}
+
 export const escapeHtml = html => {
   return html
     .replace(/</g, '&lt;')

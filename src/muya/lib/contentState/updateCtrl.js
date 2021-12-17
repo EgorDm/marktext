@@ -1,5 +1,5 @@
 import { tokenizer } from '../parser/'
-import { conflict } from '../utils'
+import { BLOCKQUOTE_REG, conflict, extractBlockquoteType } from '../utils'
 
 const INLINE_UPDATE_FRAGMENTS = [
   '(?:^|\n) {0,3}([*+-] {1,4})', // Bullet list
@@ -7,7 +7,7 @@ const INLINE_UPDATE_FRAGMENTS = [
   '(?:^|\n) {0,3}(\\d{1,9}(?:\\.|\\)) {1,4})', // Order list
   '(?:^|\n) {0,3}(#{1,6})(?=\\s{1,}|$)', // ATX headings
   '^(?:[\\s\\S]+?)\\n {0,3}(\\={3,}|\\-{3,})(?= {1,}|$)', // Setext headings **match from beginning**
-  '(?:^|\n) {0,3}(>).+', // Block quote
+  '(?:^|\n) {0,3}(>|%|:).+', // Block quote
   '^( {4,})', // Indent code **match from beginning**
   '^(\\[\\^[^\\^\\[\\]\\s]+?(?<!\\\\)\\]: )', // Footnote **match from beginning**
   '(?:^|\n) {0,3}((?:\\* *\\* *\\*|- *- *-|_ *_ *_)[ \\*\\-\\_]*)$' // Thematic break
@@ -478,10 +478,16 @@ const updateCtrl = ContentState => {
     const lines = text.split('\n')
     const preParagraphLines = []
     const quoteLines = []
+    let blockquoteType = false
     let quoteLinesHasPushed = false
 
     for (const l of lines) {
-      if (/^ {0,3}>/.test(l) && !quoteLinesHasPushed) {
+      if (BLOCKQUOTE_REG.test(l) && !quoteLinesHasPushed) {
+        // Detect blockquote type
+        if (!blockquoteType) {
+          blockquoteType = extractBlockquoteType(l)
+        }
+
         quoteLinesHasPushed = true
         quoteLines.push(l.trimStart().substring(1).trimStart())
       } else if (!quoteLinesHasPushed) {
@@ -507,7 +513,9 @@ const updateCtrl = ContentState => {
       quoteParagraphBlock = this.createBlockP(quoteLines.join('\n'))
     }
 
-    const quoteBlock = this.createBlock('blockquote')
+    const quoteBlock = this.createBlock('blockquote', {
+      blockquoteType
+    })
     this.appendChild(quoteBlock, quoteParagraphBlock)
     this.insertBefore(quoteBlock, block)
 

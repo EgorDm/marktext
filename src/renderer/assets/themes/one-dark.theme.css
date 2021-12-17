@@ -219,6 +219,14 @@ blockquote::before {
   background: var(--highlightThemeColor);
 }
 
+blockquote[blockquote-type="comment"]::before {
+  background: rgba(33, 181, 111, 1);
+}
+
+blockquote[blockquote-type="comment"] {
+  color: rgba(122, 230, 179, 0.65);
+}
+
 :not(pre) > code[class*="language-"],
 pre:not(.CodeMirror-line),
 pre[class*="language-"],

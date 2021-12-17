@@ -8,6 +8,7 @@
  * Pandoc Markdown: https://pandoc.org/MANUAL.html#pandocs-markdown
  * The output markdown needs to obey the standards of these Spec.
  */
+import { BLOCKQUOTE_TYPES } from './index'
 
 class ExportMarkdown {
   constructor (blocks, listIndentation = 1, isGitlabCompatibilityEnabled = false) {
@@ -192,8 +193,9 @@ class ExportMarkdown {
   }
 
   normalizeBlockquote (block, indent) {
-    const { children } = block
-    const newIndent = `${indent}> `
+    const { children, blockquoteType = 'quote' } = block
+    const quoteChar = BLOCKQUOTE_TYPES[blockquoteType]
+    const newIndent = `${indent}${quoteChar} `
     return this.translateBlocks2Markdown(children, newIndent)
   }
 

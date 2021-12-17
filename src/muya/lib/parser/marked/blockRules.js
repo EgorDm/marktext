@@ -12,7 +12,7 @@ export const block = {
   fences: /^ {0,3}(`{3,}(?=[^`\n]*\n)|~{3,})([^\n]*)\n(?:|([\s\S]*?)\n)(?: {0,3}\1[~`]* *(?:\n+|$)|$)/,
   hr: /^ {0,3}((?:- *){3,}|(?:_ *){3,}|(?:\* *){3,})(?:\n+|$)/,
   heading: /^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/,
-  blockquote: /^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/,
+  blockquote: /^( {0,3}[>%:] ?(paragraph|[^\n]*)(?:\n|$))+/,
   list: /^( {0,3})(bull) [\s\S]+?(?:hr|def|\n{2,}(?! )(?!\1bull )\n*|\s*$)/,
   html: '^ {0,3}(?:' + // optional indentation
     '<(script|pre|style)[\\s>][\\s\\S]*?(?:</\\1>[^\\n]*\\n+|$)' + // (1)
@@ -79,7 +79,7 @@ block.paragraph = edit(block._paragraph)
   .replace('hr', block.hr)
   .replace('heading', ' {0,3}#{1,6} ')
   .replace('|lheading', '') // setex headings don't interrupt commonmark paragraphs
-  .replace('blockquote', ' {0,3}>')
+  .replace('blockquote', ' {0,3}[>%:]')
   .replace('fences', ' {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n')
   .replace('list', ' {0,3}(?:[*+-]|1[.)]) ') // only lists starting from 1 can interrupt
   .replace('html', '</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|!--)')
@@ -112,7 +112,7 @@ export const gfm = Object.assign({}, normal, {
 gfm.nptable = edit(gfm.nptable)
   .replace('hr', block.hr)
   .replace('heading', ' {0,3}#{1,6} ')
-  .replace('blockquote', ' {0,3}>')
+  .replace('blockquote', ' {0,3}[>%:]')
   .replace('code', ' {4}[^\\n]')
   .replace('fences', ' {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n')
   .replace('list', ' {0,3}(?:[*+-]|1[.)]) ') // only lists starting from 1 can interrupt
@@ -123,7 +123,7 @@ gfm.nptable = edit(gfm.nptable)
 gfm.table = edit(gfm.table)
   .replace('hr', block.hr)
   .replace('heading', ' {0,3}#{1,6} ')
-  .replace('blockquote', ' {0,3}>')
+  .replace('blockquote', ' {0,3}[>%:]')
   .replace('code', ' {4}[^\\n]')
   .replace('fences', ' {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n')
   .replace('list', ' {0,3}(?:[*+-]|1[.)]) ') // only lists starting from 1 can interrupt
@@ -153,7 +153,7 @@ export const pedantic = Object.assign({}, normal, {
     .replace('hr', block.hr)
     .replace('heading', ' *#{1,6} *[^\n]')
     .replace('lheading', block.lheading)
-    .replace('blockquote', ' {0,3}>')
+    .replace('blockquote', ' {0,3}[>%:]')
     .replace('|fences', '')
     .replace('|list', '')
     .replace('|html', '')

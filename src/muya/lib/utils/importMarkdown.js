@@ -335,7 +335,10 @@ const importRegister = ContentState => {
         }
 
         case 'blockquote_start': {
-          block = this.createBlock('blockquote')
+          const blockquoteType = token.blockquoteType ?? 'quote'
+          block = this.createBlock('blockquote', {
+            blockquoteType
+          })
           this.appendChild(parentList[0], block)
           parentList.unshift(block)
           break

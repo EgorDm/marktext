@@ -1,6 +1,7 @@
 import { normal, gfm, pedantic } from './blockRules'
 import options from './options'
 import { splitCells, rtrim, getUniqueId } from './utils'
+import { extractBlockquoteType } from '../../utils'
 
 /**
  * Block Lexer
@@ -303,11 +304,13 @@ Lexer.prototype.token = function (src, top) {
     if (cap) {
       src = src.substring(cap[0].length)
 
+      const blockquoteType = extractBlockquoteType(cap[0])
       this.tokens.push({
-        type: 'blockquote_start'
+        type: 'blockquote_start',
+        blockquoteType
       })
 
-      cap = cap[0].replace(/^ *> ?/gm, '')
+      cap = cap[0].replace(/^ *[>%:] ?/gm, '')
 
       // Pass `top` to keep the current
       // "toplevel" state. This is exactly

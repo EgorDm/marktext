@@ -178,6 +178,8 @@ export default function renderContainerBlock (parent, block, activeBlocks, match
       const code = codeBlock.children.map(line => line.text).join('\n')
       this.codeCache.set(block.key, code)
     }
+  } else if (type === 'blockquote') {
+    Object.assign(data.attrs, { 'blockquote-type': block.blockquoteType })
   }
 
   if (!block.parent) {
