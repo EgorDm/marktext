@@ -302,7 +302,7 @@
   "citationLinkTemplate": {
     "description": "Markdown-Template for pandoc citation links. '{{citekey}}' will be replaced with the cite key.",
     "type": "string",
-    "default": "zotero://select/items/bbt:{{citekey}}"
+    "default": "zotero://select/items/@{{citekey}}"
   },
   "isHtmlEnabled": {
     "description": "Markdown-Enable HTML rendering",
