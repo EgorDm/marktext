@@ -322,9 +322,10 @@ const importRegister = ContentState => {
           break
         }
 
+        case 'space':
         case 'toc':
         case 'paragraph': {
-          value = token.text
+          value = token.text || ''
           block = this.createBlock('p')
           const contentBlock = this.createBlock('span', {
             text: value
@@ -413,10 +414,6 @@ const importRegister = ContentState => {
 
         case 'list_item_end': {
           parentList.shift()
-          break
-        }
-
-        case 'space': {
           break
         }
 

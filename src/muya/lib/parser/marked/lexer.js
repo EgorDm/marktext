@@ -121,9 +121,12 @@ Lexer.prototype.token = function (src, top) {
     if (cap) {
       src = src.substring(cap[0].length)
       if (cap[0].length > 1) {
-        this.tokens.push({
-          type: 'space'
-        })
+        const newlineCount = Math.floor((cap[0].split(/\r\n|\n\r|\n|\r/).length - (this.tokens.length ? 2 : 1)) / 2)
+        for (let i = 0; i < newlineCount; i++) {
+          this.tokens.push({
+            type: 'space'
+          })
+        }
       }
     }
 
