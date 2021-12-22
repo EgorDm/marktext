@@ -309,6 +309,28 @@ figure.ag-active.ag-container-block > div.ag-container-preview {
   text-indent: 0;
 }
 
+h1 {
+  font-size: 2.5em;
+  padding-bottom: 0.25em;
+  border-bottom: 3px double var(--editorColor80);
+}
+
+h2 {
+  font-size: 2em;
+  padding-bottom: 0.25em;
+  border-bottom: 3px double var(--editorColor80);
+}
+
+h3 {
+  font-size: 1.75em;
+  padding-bottom: 0.25em;
+  border-bottom: 1px solid var(--editorColor80);
+}
+
+#ag-editor-id > p.ag-paragraph > span > span {
+  text-indent: 0;
+}
+
 /* ------------------------------------ */
 
 /*
