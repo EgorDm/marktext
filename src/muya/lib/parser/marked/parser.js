@@ -144,12 +144,13 @@ Parser.prototype.tok = function () {
     }
     case 'blockquote_start': {
       let body = ''
+      const blockquoteType = this.token.blockquoteType
 
       while (this.next().type !== 'blockquote_end') {
         body += this.tok()
       }
 
-      return this.renderer.blockquote(body)
+      return this.renderer.blockquote(body, blockquoteType)
     }
     // All the tokens will be footnotes if it after a footnote_start token. Because we put all footnote token at the end.
     case 'footnote_start': {

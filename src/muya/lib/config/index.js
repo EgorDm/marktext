@@ -231,6 +231,7 @@ export const LINE_BREAK = '\n'
 export const PREVIEW_DOMPURIFY_CONFIG = Object.freeze({
   // do not forbit `class` because `code` element use class to present language
   FORBID_ATTR: ['style', 'contenteditable'],
+  ADD_ATTR: ['blockquote-type'],
   ALLOW_DATA_ATTR: false,
   USE_PROFILES: {
     html: true,

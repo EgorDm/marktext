@@ -1,5 +1,5 @@
 import TurndownService from 'turndown'
-import { identity } from './index'
+import { BLOCKQUOTE_TYPES, identity } from './index'
 
 const turndownPluginGfm = require('joplin-turndown-plugin-gfm')
 
@@ -55,6 +55,17 @@ export const usePluginAddRules = (turndownService, keeps) => {
     },
     replacement (content, node, options) {
       return `$$\n${content}\n$$`
+    }
+  })
+
+  turndownService.addRule('blockquote', {
+    filter: 'blockquote',
+    replacement: function (content, node) {
+      const blockquoteType = node.getAttribute('blockquote-type') || 'quote'
+      const blockquotePrefix = BLOCKQUOTE_TYPES[blockquoteType]
+      content = content.replace(/^\n+|\n+$/g, '')
+      content = content.replace(/^/gm, `${blockquotePrefix} `)
+      return '\n\n' + content + '\n\n'
     }
   })
 
